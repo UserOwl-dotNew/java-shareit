@@ -20,11 +20,12 @@ import java.util.Collection;
 @Slf4j
 public class ItemController {
     private final ItemService itemService;
+    private static final String REQUEST_HEADER_SHARER_USER_ID = "X-Sharer-User-Id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto add(@Valid @RequestBody ItemDto itemDto,
-                       @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+                       @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long ownerId) {
         ItemValidator.itemValidator(itemDto);
         log.info("Post /items - запрос на добавление вещи ownerId={}, itemDto={}", ownerId, itemDto);
         ItemDto dto = itemService.addItem(ownerId, itemDto);
@@ -35,7 +36,7 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto update(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+    public ItemDto update(@RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long ownerId,
                           @PathVariable("itemId") Long itemId,
                           @Valid @RequestBody ItemDto itemDto) {
         log.info("Patch /items/{itemId} - запрос на обновление вещи itemId={}, itemDto={}", itemId, itemDto);
@@ -55,7 +56,7 @@ public class ItemController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDto> getAll(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public Collection<ItemDto> getAll(@RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long ownerId) {
         log.info("Get /items - запрос на получение всех вещей владельца с id={}", ownerId);
         Collection<ItemDto> itemDtos = itemService.getAllItemsFromOwner(ownerId);
         log.info("Get /items - вещи владельца получены itemDtosSize={}", itemDtos.size());
@@ -73,7 +74,7 @@ public class ItemController {
 
     @DeleteMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+    public void delete(@RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long ownerId,
                        @PathVariable("itemId") Long itemId) {
         itemService.deleteItem(ownerId, itemId);
     }

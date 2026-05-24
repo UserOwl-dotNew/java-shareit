@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class ItemRepositoryImpl implements ItemRepository {
     private final List<Item> items = new ArrayList<>();
     private final ItemMapper itemMapper;
+    private static final Long START_INDEX = 0L;
 
     @Override
     public Item add(Long ownerId, Item item) {
@@ -92,7 +93,7 @@ public class ItemRepositoryImpl implements ItemRepository {
         long id = items.stream()
                 .mapToLong(Item::getId)
                 .max()
-                .orElse(0);
+                .orElse(START_INDEX);
         return ++id;
     }
 }
