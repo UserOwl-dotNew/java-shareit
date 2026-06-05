@@ -10,10 +10,10 @@ import ru.practicum.shareit.booking.model.Booking;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.practicum.shareit.constant.SqlConstants.CURRENT_TIMESTAMP;
+
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    static final String CURRENT_TIMESTAMP = "CURRENT_TIMESTAMP";
-
     @Query("SELECT b FROM Booking b WHERE b.booker.id = :userId ORDER BY b.start DESC")
     List<Booking> findAllByBookerId(@Param("userId") Long userId);
 
