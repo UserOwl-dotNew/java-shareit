@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.NewItemDto;
 import ru.practicum.shareit.item.model.Item;
 
 @Mapper(componentModel = "spring",
@@ -12,7 +13,7 @@ import ru.practicum.shareit.item.model.Item;
 public interface ItemMapper {
     ItemDto toItemDto(Item item);
 
-    Item toItem(ItemDto dto);
+    Item toItem(NewItemDto dto);
 
     @Mapping(target = "id", ignore = true)
     void updateItemFields(ItemDto source, @MappingTarget Item target);
