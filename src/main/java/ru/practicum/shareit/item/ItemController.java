@@ -15,6 +15,8 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.Collection;
 
+import static ru.practicum.shareit.constant.SqlConstants.REQUEST_HEADER_SHARER_USER_ID;
+
 /**
  * TODO Sprint add-controllers.
  */
@@ -24,7 +26,6 @@ import java.util.Collection;
 @Slf4j
 public class ItemController {
     private final ItemService itemService;
-    private static final String REQUEST_HEADER_SHARER_USER_ID = "X-Sharer-User-Id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
