@@ -42,7 +42,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto add(@RequestBody UserDto userDto) {
         log.info("Post /users - запрос на добавление пользователя");
-        UserValidator.UserDtoValidator(userDto);
+        UserValidator.userDtoValidator(userDto);
         UserDto dto = userService.saveUser(userDto);
         log.info("Post /users - пользователь успешно добавлен");
         return dto;

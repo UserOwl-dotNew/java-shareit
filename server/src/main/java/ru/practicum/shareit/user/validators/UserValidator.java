@@ -6,7 +6,7 @@ import ru.practicum.shareit.exceptions.ValidationException;
 
 @Slf4j
 public class UserValidator {
-    public static void UserDtoValidator(UserDto user) {
+    public static void userDtoValidator(UserDto user) {
         if (user.getEmail() == null || user.getEmail().isBlank()) {
             log.error("Email должен быть указан");
             throw new ValidationException("Email должен быть указан");
