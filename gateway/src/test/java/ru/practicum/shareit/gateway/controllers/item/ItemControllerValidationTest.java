@@ -13,6 +13,7 @@ import ru.practicum.shareit.dto.item.NewItemDto;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.practicum.shareit.gateway.constants.Headers.REQUEST_HEADER_SHARER_USER_ID;
 
 @WebMvcTest(ItemController.class)
 public class ItemControllerValidationTest {
@@ -41,7 +42,7 @@ public class ItemControllerValidationTest {
         newItemDto.setName("");
 
         mockMvc.perform(post("/items")
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(REQUEST_HEADER_SHARER_USER_ID, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newItemDto)))
                 .andExpect(status().isBadRequest());
@@ -52,7 +53,7 @@ public class ItemControllerValidationTest {
         newItemDto.setDescription("");
 
         mockMvc.perform(post("/items")
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(REQUEST_HEADER_SHARER_USER_ID, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newItemDto)))
                 .andExpect(status().isBadRequest());
@@ -63,7 +64,7 @@ public class ItemControllerValidationTest {
         newItemDto.setAvailable(null);
 
         mockMvc.perform(post("/items")
-                        .header("X-Sharer-User-Id", 1L)
+                        .header(REQUEST_HEADER_SHARER_USER_ID, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newItemDto)))
                 .andExpect(status().isBadRequest());

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.client.BaseClient;
 import ru.practicum.shareit.dto.request.ItemRequestDto;
 
+import static ru.practicum.shareit.gateway.constants.Headers.REQUEST_HEADER_SHARER_USER_ID;
+
 @RestController
 @RequestMapping("/requests")
 @RequiredArgsConstructor
@@ -19,14 +21,14 @@ public class ItemRequestController {
     @PostMapping
     public ResponseEntity<?> create(
             @Valid @RequestBody ItemRequestDto dto,
-            @RequestHeader("X-Sharer-User-Id") Long userId) {
+            @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId) {
         log.info("POST /requests - создание запроса вещи пользователем {}", userId);
         return client.post("/requests", userId, dto);
     }
 
     @GetMapping
     public ResponseEntity<?> getSelfRequests(
-            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId,
             @RequestParam(defaultValue = "0") Integer from,
             @RequestParam(defaultValue = "10") Integer size) {
         log.info("GET /requests - запрос всех запросов пользователя {}, from={}, size={}", userId, from, size);
@@ -35,7 +37,7 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllRequests(
-            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId,
             @RequestParam(defaultValue = "0") Integer from,
             @RequestParam(defaultValue = "10") Integer size) {
         log.info("GET /requests/all - запрос всех запросов, from={}, size={}", from, size);
@@ -45,7 +47,7 @@ public class ItemRequestController {
     @GetMapping("/{requestId}")
     public ResponseEntity<?> getRequestById(
             @PathVariable Long requestId,
-            @RequestHeader("X-Sharer-User-Id") Long userId) {
+            @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId) {
         log.info("GET /requests/{} - запрос вещи пользователем {}", requestId, userId);
         return client.get("/requests/" + requestId, userId);
     }

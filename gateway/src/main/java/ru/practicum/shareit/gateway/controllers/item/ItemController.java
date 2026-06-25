@@ -39,14 +39,14 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public ResponseEntity<?> getById(
             @PathVariable Long itemId,
-            @RequestHeader("X-Sharer-User-Id") Long userId) {
+            @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId) {
         log.info("GET /items/{} - запрос вещи пользователем {}", itemId, userId);
         return client.get("/items/" + itemId, userId);
     }
 
     @GetMapping
     public ResponseEntity<?> getByOwner(
-            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId,
             @RequestParam(defaultValue = "0") Integer from,
             @RequestParam(defaultValue = "10") Integer size) {
         log.info("GET /items - запрос всех вещей владельца {}, from={}, size={}", userId, from, size);
@@ -66,7 +66,7 @@ public class ItemController {
     public ResponseEntity<?> addComment(
             @PathVariable Long itemId,
             @Valid @RequestBody NewCommentDto dto,
-            @RequestHeader("X-Sharer-User-Id") Long userId) {
+            @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId) {
         log.info("POST /items/{}/comment - добавление комментария пользователем {}", itemId, userId);
         return client.post("/items/" + itemId + "/comment", userId, dto);
     }

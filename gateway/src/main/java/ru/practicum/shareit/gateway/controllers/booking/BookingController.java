@@ -8,18 +8,19 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.client.BaseClient;
 import ru.practicum.shareit.dto.booking.NewBookingDto;
 
+import static ru.practicum.shareit.gateway.constants.Headers.REQUEST_HEADER_SHARER_USER_ID;
+
 @RestController
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 @Slf4j
 public class BookingController {
-    private static final String REQUEST_HEADER_SHARER_USER_ID = "X-Sharer-User-Id";
     private final BaseClient client;
 
     @PostMapping
     public ResponseEntity<?> create(
             @Valid @RequestBody NewBookingDto dto,
-            @RequestHeader("X-Sharer-User-Id") Long userId) {
+            @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId) {
         log.info("POST /bookings - создание бронирования от пользователя {}", userId);
         return client.post("/bookings", userId, dto);
     }
@@ -28,7 +29,7 @@ public class BookingController {
     public ResponseEntity<?> approve(
             @PathVariable Long bookingId,
             @RequestParam Boolean approved,  // ← параметр обязателен
-            @RequestHeader("X-Sharer-User-Id") Long userId) {
+            @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId) {
         log.info("PATCH /bookings/{} - подтверждение бронирования пользователем {}, approved={}",
                 bookingId, userId, approved);
         return client.patch("/bookings/" + bookingId + "?approved=" + approved, userId);
