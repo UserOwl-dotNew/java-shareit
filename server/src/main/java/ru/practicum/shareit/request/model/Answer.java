@@ -23,7 +23,8 @@ public class Answer {
     @Column(name = "item_id", nullable = false)
     private Long itemId;
 
-    private String title;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "owner_id", nullable = false)
     private Long ownerId;
