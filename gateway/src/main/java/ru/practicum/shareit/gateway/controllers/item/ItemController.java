@@ -4,11 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.client.BaseClient;
 import ru.practicum.shareit.dto.comment.NewCommentDto;
 import ru.practicum.shareit.dto.item.NewItemDto;
 
-import static ru.practicum.shareit.gateway.controllers.booking.BookingController.REQUEST_HEADER_SHARER_USER_ID;
+import static ru.practicum.shareit.gateway.constants.Headers.REQUEST_HEADER_SHARER_USER_ID;
 
 @RestController
 @RequestMapping("/items")
