@@ -1,30 +1,46 @@
 services:
-  server:
-    build: .
-    image: shareit-server
-    container_name: shareit-server
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shareit
-      - SPRING_DATASOURCE_USERNAME=shareit
-      - SPRING_DATASOURCE_PASSWORD=shareit
-      - TZ=Europe/Moscow
-
   db:
     image: postgres:16.1
     container_name: postgres
+    environment:
+      POSTGRES_DB: shareit
+      POSTGRES_USER: shareit
+      POSTGRES_PASSWORD: shareit
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=shareit
-      - POSTGRES_USER=shareit
-      - POSTGRES_DB=shareit
-      - TZ=Europe/Moscow
     healthcheck:
-      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      test: ["CMD-SHELL", "pg_isready -U shareit"]
+      interval: 10s
       timeout: 5s
-      interval: 5s
-      retries: 10
+      retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: shareit-server
+    ports:
+      - "9090:9090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/shareit
+      SPRING_DATASOURCE_USERNAME: shareit
+      SPRING_DATASOURCE_PASSWORD: shareit
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: shareit-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      SHAREIT_SERVER_URL: http://172.18.0.3:9090
+    depends_on:
+      - server
+    restart: on-failure
