@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: postgres:16.1
@@ -7,12 +9,14 @@ services:
       POSTGRES_USER: shareit
       POSTGRES_PASSWORD: shareit
     ports:
-      - "5432:5432"
+      - "6541:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U shareit" ]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - shareit-network
 
   server:
     build:
@@ -27,6 +31,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: shareit
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - shareit-network
     depends_on:
       db:
         condition: service_healthy
@@ -41,6 +47,12 @@ services:
       - "8080:8080"
     environment:
       SHAREIT_SERVER_URL: http://172.18.0.3:9090
+    networks:
+      - shareit-network
     depends_on:
       - server
     restart: on-failure
+
+networks:
+  shareit-network:
+    driver: bridge
