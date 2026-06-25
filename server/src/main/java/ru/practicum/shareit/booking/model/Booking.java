@@ -3,7 +3,7 @@ package ru.practicum.shareit.booking.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
-import ru.practicum.shareit.booking.enums.BookingStatus;
+import ru.practicum.shareit.enums.booking.BookingStatus;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 

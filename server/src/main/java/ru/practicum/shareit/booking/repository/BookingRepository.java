@@ -4,13 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.booking.enums.BookingStatus;
+import ru.practicum.shareit.enums.booking.BookingStatus;
 import ru.practicum.shareit.booking.model.Booking;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ru.practicum.shareit.constant.SqlConstants.CURRENT_TIMESTAMP;
+import static ru.practicum.shareit.constants.SqlConstants.CURRENT_TIMESTAMP;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
