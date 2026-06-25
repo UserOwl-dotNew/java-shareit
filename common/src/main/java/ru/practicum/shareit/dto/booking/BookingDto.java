@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
-import ru.practicum.shareit.enums.booking.BookingStatus;
 import ru.practicum.shareit.dto.item.ItemDto;
 import ru.practicum.shareit.dto.user.UserDto;
+import ru.practicum.shareit.enums.booking.BookingStatus;
 
 import java.time.LocalDateTime;
 

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import ru.practicum.shareit.dto.booking.BookingDto;
-import ru.practicum.shareit.dto.booking.BookingShortDto;
 import ru.practicum.shareit.dto.booking.NewBookingDto;
 import ru.practicum.shareit.enums.booking.BookingStatus;
 

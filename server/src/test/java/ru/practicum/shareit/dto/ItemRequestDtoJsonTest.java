@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import ru.practicum.shareit.dto.request.ItemRequestDto;
 import ru.practicum.shareit.dto.request.ItemRequestDtoWithAnswers;
-import ru.practicum.shareit.dto.answer.AnswerDto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
