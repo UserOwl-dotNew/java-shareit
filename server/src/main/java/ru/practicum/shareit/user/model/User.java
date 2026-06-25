@@ -6,9 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.ToString;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
 @ToString
 @Entity

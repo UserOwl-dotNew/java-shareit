@@ -9,6 +9,8 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.shareit.constants.SqlConstants.DATA_PATTERN;
+
 @Data
 @ToString
 public class NewBookingDto {
@@ -17,11 +19,11 @@ public class NewBookingDto {
 
     @NotNull(message = "Поле start не должно быть пустым")
     @FutureOrPresent
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATA_PATTERN)
     private LocalDateTime start;
 
     @NotNull(message = "Поле end не должно быть пустым")
     @Future
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATA_PATTERN)
     private LocalDateTime end;
 }

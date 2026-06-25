@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.shareit.constants.SqlConstants.DATA_PATTERN;
+
 @Data
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,6 +16,6 @@ public class CommentDto {
     private Long id;
     private String text;
     private String authorName;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATA_PATTERN)
     private LocalDateTime created;
 }

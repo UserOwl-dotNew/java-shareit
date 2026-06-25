@@ -16,9 +16,6 @@ import java.util.Collection;
 
 import static ru.practicum.shareit.constants.SqlConstants.REQUEST_HEADER_SHARER_USER_ID;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -67,22 +64,7 @@ public class ItemController {
                       @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId) {
         log.info("Get /items/{itemId} - запрос на получение вещи по id={}", itemId);
         Item item = itemService.getItemEntity(itemId);
-
-        if (item.getOwnerId().equals(userId)) {
-            /*
-             *Владелец получает расширенный DTO с lastBooking/nextBooking
-             */
-            ItemWithBookingDto dto = itemService.getItemByOwnerForUser(userId, itemId);
-            log.info("Get /items/{} - вещь получена владельцем", itemId);
-            return dto;
-        } else {
-            /*
-             *Обычный пользователь получает базовый DTO с комментариями (без lastBooking/nextBooking)
-             */
-            ItemWithBookingDto dto = itemService.getItemFromUser(itemId, userId);
-            log.info("Get /items/{} - вещь получена пользователем", itemId);
-            return dto;
-        }
+        return itemService.getItemForUserOrOwner(item.getOwnerId(), userId, itemId);
     }
 
     @GetMapping

@@ -84,41 +84,38 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public CommentDto addComment(Long userId, Long itemId, NewCommentDto dto) {
+        // 1. Проверяем существование пользователя и предмета
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id=" + userId + " не найден"));
+
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Вещи с id=" + itemId + " не найдено"));
 
+        // 2. Проверяем, что пользователь может оставить комментарий
         LocalDateTime now = LocalDateTime.now();
-        log.info("Проверка для userId={}, now={}, item={}", userId, now, item);
 
-        try {
-            List<Booking> allApproved = bookingRepository.findByBookerIdAndItemIdAndStatus(userId, itemId);
-            log.info("Найдено подходящих бронирований для комментария: {}", allApproved.size());
-            log.info("Всего APPROVED бронирований для этой пары: {}", allApproved.size());
-            for (Booking b : allApproved) {
-                log.info("  id={}, end={}, now={} end < now = {}", b.getId(), b.getEnd(), now, b.getEnd().isBefore(now));
-            }
-        } catch (Exception e) {
-            log.error("Ошибка при вызове репозитория", e);
-            throw e;
-        }
+        // Ищем завершенные бронирования (APPROVED и end < now)
+        List<Booking> completedBookings = bookingRepository
+                .findCompletedBookingsByUserAndItem(
+                        userId, itemId, now);
 
-        List<Booking> bookings = bookingRepository.findByBookerIdAndItemIdAndEndDateBefore(
-                userId, itemId, now);
-        log.info("Найдено подходящих бронирований для комментария: {}", bookings.size());
-
-        if (bookings.isEmpty()) {
+        if (completedBookings.isEmpty()) {
+            log.warn("Пользователь {} пытается оставить комментарий к вещи {}, но нет завершенных бронирований",
+                    userId, itemId);
             throw new ValidationException("Нельзя оставить комментарий: у вас нет завершенных бронирований для этой вещи");
         }
 
+        // 3. Создаем комментарий
         Comment comment = new Comment();
         comment.setItem(item);
         comment.setText(dto.getText());
         comment.setAuthor(user);
         comment.setCreated(LocalDateTime.now());
 
+        // 4. Сохраняем и возвращаем
         Comment savedComment = commentRepository.save(comment);
+        log.info("Добавлен комментарий к вещи {} от пользователя {}", itemId, userId);
+
         return commentMapper.toCommentDto(savedComment);
     }
 
@@ -136,6 +133,23 @@ public class ItemServiceImpl implements ItemService {
         itemMapper.updateItemFields(dto, findItem);
         log.info("Вещь с id=" + itemId + " обновлена: " + findItem);
         return itemMapper.toItemDto(itemRepository.save(findItem));
+    }
+
+    @Override
+    public Object getItemForUserOrOwner(Long ownerId, Long userId, Long itemId) {
+        if (ownerId.equals(userId)) {
+            /*
+             *Владелец получает расширенный DTO с lastBooking/nextBooking
+             */
+            ItemWithBookingDto dto = getItemByOwnerForUser(userId, itemId);
+            return dto;
+        } else {
+            /*
+             *Обычный пользователь получает базовый DTO с комментариями (без lastBooking/nextBooking)
+             */
+            ItemWithBookingDto dto = getItemFromUser(itemId, userId);
+            return dto;
+        }
     }
 
     @Override
@@ -196,6 +210,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemWithBookingDto getItemByOwnerForUser(Long ownerId, Long itemId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Вещи с id=" + itemId + " не найдено"));

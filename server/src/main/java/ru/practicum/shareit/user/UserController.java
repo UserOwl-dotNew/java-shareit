@@ -10,9 +10,6 @@ import ru.practicum.shareit.user.validators.UserValidator;
 
 import java.util.Collection;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Slf4j
 @RequiredArgsConstructor
 @RestController

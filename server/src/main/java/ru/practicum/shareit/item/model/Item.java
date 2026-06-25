@@ -7,9 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.ToString;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
 @ToString
 @Entity

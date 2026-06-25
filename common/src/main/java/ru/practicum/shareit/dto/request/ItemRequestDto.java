@@ -7,12 +7,14 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.shareit.constants.SqlConstants.DATA_PATTERN;
+
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ItemRequestDto {
     private Long id;
     @NotBlank(message = "Необходимо указать description")
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATA_PATTERN)
     private LocalDateTime created;
 }

@@ -10,6 +10,8 @@ import ru.practicum.shareit.enums.booking.BookingStatus;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.shareit.constants.SqlConstants.DATA_PATTERN;
+
 /**
  * TODO Sprint add-bookings.
  */
@@ -20,9 +22,9 @@ public class BookingDto {
     private Long id;
     private ItemDto item;
     private UserDto booker;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATA_PATTERN)
     private LocalDateTime start;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATA_PATTERN)
     private LocalDateTime end;
     private BookingStatus status;
 }

@@ -8,6 +8,8 @@ import ru.practicum.shareit.dto.answer.AnswerDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.practicum.shareit.constants.SqlConstants.DATA_PATTERN;
+
 /**
  * TODO Sprint add-item-requests.
  */
@@ -16,7 +18,7 @@ import java.util.List;
 public class ItemRequestDtoWithAnswers {
     private Long id;
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATA_PATTERN)
     private LocalDateTime created;
     private List<AnswerDto> items;
 }
