@@ -2,6 +2,9 @@ package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
 import lombok.ToString;
+import ru.practicum.shareit.item.comment.dto.CommentDto;
+
+import java.util.List;
 
 /**
  * TODO Sprint add-controllers.
@@ -13,4 +16,5 @@ public class ItemDto {
     private String name;
     private String description;
     private Boolean available;
+    private List<CommentDto> comments;
 }

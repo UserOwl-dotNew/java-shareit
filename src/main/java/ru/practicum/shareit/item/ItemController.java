@@ -5,9 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.comment.dto.CommentDto;
+import ru.practicum.shareit.item.comment.dto.NewCommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemWithBookingDto;
+import ru.practicum.shareit.item.dto.NewItemDto;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.item.validators.ItemValidator;
 
 import java.util.Collection;
 
@@ -24,13 +28,25 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto add(@Valid @RequestBody ItemDto itemDto,
+    public ItemDto add(@Valid @RequestBody NewItemDto itemDto,
                        @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long ownerId) {
-        ItemValidator.itemValidator(itemDto);
         log.info("Post /items - запрос на добавление вещи ownerId={}, itemDto={}", ownerId, itemDto);
         ItemDto dto = itemService.addItem(ownerId, itemDto);
         log.info("Post /items - вещь добавлена dto={}", dto);
         return dto;
+    }
+
+    @PostMapping("/{itemId}/comment")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentDto addComment(@RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId,
+                                 @PathVariable("itemId") Long itemId,
+                                 @Valid @RequestBody NewCommentDto dto) {
+        log.info("Post /items/{itemId}/comment - запрос на добавление комментария " +
+                        "userId={}, itemId={}, textComment={}",
+                userId, itemId, dto.getText());
+        CommentDto commentDto = itemService.addComment(userId, itemId, dto);
+        log.info("Post /items/{itemId}/comment - комментарий успешно добавлен");
+        return commentDto;
     }
 
 
@@ -38,7 +54,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     public ItemDto update(@RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long ownerId,
                           @PathVariable("itemId") Long itemId,
-                          @Valid @RequestBody ItemDto itemDto) {
+                          @RequestBody ItemDto itemDto) {
         log.info("Patch /items/{itemId} - запрос на обновление вещи itemId={}, itemDto={}", itemId, itemDto);
         ItemDto dto = itemService.updateItem(ownerId, itemId, itemDto);
         log.info("Patch /items/{itemId} - вещь обновлена dto={}", dto);
@@ -47,18 +63,33 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto get(@PathVariable("itemId") Long itemId) {
+    public Object get(@PathVariable("itemId") Long itemId,
+                      @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId) {
         log.info("Get /items/{itemId} - запрос на получение вещи по id={}", itemId);
-        ItemDto dto = itemService.getItem(itemId);
-        log.info("Get /items/{itemId} - вещь получена dto={}", dto);
-        return dto;
+        Item item = itemService.getItemEntity(itemId);
+
+        if (item.getOwnerId().equals(userId)) {
+            /*
+             *Владелец получает расширенный DTO с lastBooking/nextBooking
+             */
+            ItemWithBookingDto dto = itemService.getItemByOwnerForUser(userId, itemId);
+            log.info("Get /items/{} - вещь получена владельцем", itemId);
+            return dto;
+        } else {
+            /*
+             *Обычный пользователь получает базовый DTO с комментариями (без lastBooking/nextBooking)
+             */
+            ItemWithBookingDto dto = itemService.getItemFromUser(itemId, userId);
+            log.info("Get /items/{} - вещь получена пользователем", itemId);
+            return dto;
+        }
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDto> getAll(@RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long ownerId) {
+    public Collection<ItemWithBookingDto> getAll(@RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long ownerId) {
         log.info("Get /items - запрос на получение всех вещей владельца с id={}", ownerId);
-        Collection<ItemDto> itemDtos = itemService.getAllItemsFromOwner(ownerId);
+        Collection<ItemWithBookingDto> itemDtos = itemService.getAllItemsWithBookings(ownerId);
         log.info("Get /items - вещи владельца получены itemDtosSize={}", itemDtos.size());
         return itemDtos;
     }
