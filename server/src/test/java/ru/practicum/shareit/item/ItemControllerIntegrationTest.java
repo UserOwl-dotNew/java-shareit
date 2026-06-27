@@ -1,5 +1,3 @@
-// Файл: src/test/java/ru/practicum/shareit/item/ItemControllerIntegrationTest.java
-
 package ru.practicum.shareit.item;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -104,7 +102,6 @@ class ItemControllerIntegrationTest {
         Long userId = 1L;
         newItemDto.setRequestId(1L);
 
-        // НАСТРАИВАЕМ MOCK НА ВЫБРОС ИСКЛЮЧЕНИЯ
         when(itemService.addItem(eq(userId), any(NewItemDto.class)))
                 .thenThrow(new DuplicatedDataException("На запрос id=1 уже был дан ответ"));
 
@@ -122,7 +119,6 @@ class ItemControllerIntegrationTest {
         Long userId = 1L;
         newItemDto.setRequestId(999L);
 
-        // НАСТРАИВАЕМ MOCK НА ВЫБРОС ИСКЛЮЧЕНИЯ
         when(itemService.addItem(eq(userId), any(NewItemDto.class)))
                 .thenThrow(new NotFoundException("Запрос с id=999 не найден"));
 
@@ -140,7 +136,6 @@ class ItemControllerIntegrationTest {
         Long userId = 999L;
         newItemDto.setRequestId(1L);
 
-        // НАСТРАИВАЕМ MOCK НА ВЫБРОС ИСКЛЮЧЕНИЯ
         when(itemService.addItem(eq(userId), any(NewItemDto.class)))
                 .thenThrow(new NotFoundException("Пользователь с id=999 не найден"));
 
@@ -158,7 +153,6 @@ class ItemControllerIntegrationTest {
         Long userId = 1L;
         newItemDto.setRequestId(1L);
 
-        // НАСТРАИВАЕМ MOCK НА ВЫБРОС ИСКЛЮЧЕНИЯ
         when(itemService.addItem(eq(userId), any(NewItemDto.class)))
                 .thenThrow(new ValidationException("Нельзя добавить вещь в ответ на свой собственный запрос"));
 

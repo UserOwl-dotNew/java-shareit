@@ -86,7 +86,7 @@ class ItemServiceImplTest {
 
         itemRequest = new ItemRequest();
         itemRequest.setId(1L);
-        itemRequest.setOwnerId(2L); // Владелец запроса - другой пользователь
+        itemRequest.setOwnerId(2L);
         itemRequest.setDescription("Need item");
         itemRequest.setCreated(LocalDateTime.now());
 
@@ -100,7 +100,6 @@ class ItemServiceImplTest {
 
     @Test
     void addItem_WithRequestId_ShouldCreateItemAndAnswer() {
-        // Arrange
         Long userId = 1L;
         Long requestId = 1L;
         newItemDto.setRequestId(requestId);
@@ -113,10 +112,8 @@ class ItemServiceImplTest {
         when(answerRepository.save(any(Answer.class))).thenReturn(answer);
         when(itemMapper.toItemDto(item)).thenReturn(itemDto);
 
-        // Act
         ItemDto result = itemService.addItem(userId, newItemDto);
 
-        // Assert
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(1L);
         assertThat(result.getName()).isEqualTo("Test Item");
@@ -131,7 +128,6 @@ class ItemServiceImplTest {
 
     @Test
     void addItem_WithoutRequestId_ShouldCreateItemOnly() {
-        // Arrange
         Long userId = 1L;
         newItemDto.setRequestId(null);
 
@@ -140,24 +136,21 @@ class ItemServiceImplTest {
         when(itemRepository.save(eq(item))).thenReturn(item);
         when(itemMapper.toItemDto(item)).thenReturn(itemDto);
 
-        // Act
         ItemDto result = itemService.addItem(userId, newItemDto);
 
-        // Assert
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(1L);
 
         verify(userRepository, times(1)).existsById(userId);
         verify(requestRepository, never()).findById(anyLong());
         verify(answerRepository, never()).existsByRequestId(anyLong());
-        verify(itemRepository, times(1)).save(eq(item)); // ✅ Проверка с eq(item)
+        verify(itemRepository, times(1)).save(eq(item));
         verify(answerRepository, never()).save(any(Answer.class));
         verify(itemMapper, times(1)).toItemDto(item);
     }
 
     @Test
     void addItem_WithInvalidRequestId_ShouldThrowNotFoundException() {
-        // Arrange
         Long userId = 1L;
         Long invalidRequestId = 999L;
         newItemDto.setRequestId(invalidRequestId);
@@ -165,7 +158,6 @@ class ItemServiceImplTest {
         when(userRepository.existsById(userId)).thenReturn(true);
         when(requestRepository.findById(invalidRequestId)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThatThrownBy(() -> itemService.addItem(userId, newItemDto))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Запрос с id=" + invalidRequestId + " не найден");
@@ -179,16 +171,14 @@ class ItemServiceImplTest {
 
     @Test
     void addItem_WithOwnRequestId_ShouldThrowValidationException() {
-        // Arrange
         Long userId = 1L;
         Long requestId = 1L;
-        itemRequest.setOwnerId(userId); // Владелец запроса = текущий пользователь
+        itemRequest.setOwnerId(userId);
         newItemDto.setRequestId(requestId);
 
         when(userRepository.existsById(userId)).thenReturn(true);
         when(requestRepository.findById(requestId)).thenReturn(Optional.of(itemRequest));
 
-        // Act & Assert
         assertThatThrownBy(() -> itemService.addItem(userId, newItemDto))
                 .isInstanceOf(ValidationException.class)
                 .hasMessage("Нельзя добавить ответ на собственный запрос");
@@ -202,7 +192,6 @@ class ItemServiceImplTest {
 
     @Test
     void addItem_WithAlreadyAnsweredRequest_ShouldThrowDuplicatedDataException() {
-        // Arrange
         Long userId = 1L;
         Long requestId = 1L;
         newItemDto.setRequestId(requestId);
@@ -224,13 +213,11 @@ class ItemServiceImplTest {
 
     @Test
     void addItem_WithInvalidUser_ShouldThrowNotFoundException() {
-        // Arrange
         Long invalidUserId = 999L;
         newItemDto.setRequestId(1L);
 
         when(userRepository.existsById(invalidUserId)).thenReturn(false);
 
-        // Act & Assert
         assertThatThrownBy(() -> itemService.addItem(invalidUserId, newItemDto))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Пользователя с id=" + invalidUserId + " не найдено");
@@ -243,26 +230,23 @@ class ItemServiceImplTest {
 
     @Test
     void addItem_WithNullRequestId_ShouldNotCheckRequestExistence() {
-        // Arrange
         Long userId = 1L;
         newItemDto.setRequestId(null);
 
         when(userRepository.existsById(userId)).thenReturn(true);
         when(itemMapper.toItem(newItemDto)).thenReturn(item);
-        when(itemRepository.save(eq(item))).thenReturn(item); // ✅ Использование eq(item)
+        when(itemRepository.save(eq(item))).thenReturn(item);
         when(itemMapper.toItemDto(item)).thenReturn(itemDto);
 
-        // Act
         ItemDto result = itemService.addItem(userId, newItemDto);
 
-        // Assert
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(1L);
 
         verify(userRepository, times(1)).existsById(userId);
         verify(requestRepository, never()).findById(anyLong());
         verify(answerRepository, never()).existsByRequestId(anyLong());
-        verify(itemRepository, times(1)).save(eq(item)); // ✅ Проверка с eq(item)
+        verify(itemRepository, times(1)).save(eq(item));
         verify(answerRepository, never()).save(any(Answer.class));
     }
 }

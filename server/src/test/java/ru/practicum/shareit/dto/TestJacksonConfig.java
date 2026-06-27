@@ -1,5 +1,3 @@
-// Файл: src/test/java/ru/practicum/shareit/dto/TestJacksonConfig.java
-
 package ru.practicum.shareit.dto;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;

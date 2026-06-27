@@ -93,7 +93,6 @@ class BookingDtoJsonTest {
                 }
                 """;
 
-        // Jackson должен выбросить исключение при десериализации невалидного статуса
         org.junit.jupiter.api.Assertions.assertThrows(
                 com.fasterxml.jackson.databind.exc.InvalidFormatException.class,
                 () -> objectMapper.readValue(json, BookingDto.class)

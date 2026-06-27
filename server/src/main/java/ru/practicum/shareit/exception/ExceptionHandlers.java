@@ -25,7 +25,7 @@ public class ExceptionHandlers {
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<?> handleValidation(ValidationException e) {
         log.warn("Validation error: {}", e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)  // ← 400, а не 500
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("error", "Bad Request", "message", e.getMessage()));
     }
 

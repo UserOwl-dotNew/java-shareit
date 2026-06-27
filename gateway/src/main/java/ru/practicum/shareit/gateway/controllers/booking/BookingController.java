@@ -28,7 +28,7 @@ public class BookingController {
     @PatchMapping("/{bookingId}")
     public ResponseEntity<?> approve(
             @PathVariable Long bookingId,
-            @RequestParam Boolean approved,  // ← параметр обязателен
+            @RequestParam Boolean approved,
             @RequestHeader(REQUEST_HEADER_SHARER_USER_ID) Long userId) {
         log.info("PATCH /bookings/{} - подтверждение бронирования пользователем {}, approved={}",
                 bookingId, userId, approved);

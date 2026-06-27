@@ -1,5 +1,3 @@
-// Файл: src/test/java/ru/practicum/shareit/dto/UserDtoMixin.java (альтернативная версия)
-
 package ru.practicum.shareit.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
