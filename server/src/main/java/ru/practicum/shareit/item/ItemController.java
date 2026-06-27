@@ -14,7 +14,7 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.Collection;
 
-import static ru.practicum.shareit.constants.SqlConstants.REQUEST_HEADER_SHARER_USER_ID;
+import static ru.practicum.shareit.constants.Constants.REQUEST_HEADER_SHARER_USER_ID;
 
 @RestController
 @RequestMapping("/items")

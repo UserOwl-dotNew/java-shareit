@@ -22,7 +22,7 @@ public class UserDto {
     @NotBlank(message = "Требуется email")
     private String email;
 
-    @JsonCreator // Эта аннотация говорит Jackson использовать именно этот конструктор для десериализации
+    @JsonCreator
     public UserDto(String name, String email) {
         this.name = name;
         this.email = email;

@@ -9,7 +9,7 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 
 import java.util.List;
 
-import static ru.practicum.shareit.constants.SqlConstants.REQUEST_HEADER_SHARER_USER_ID;
+import static ru.practicum.shareit.constants.Constants.REQUEST_HEADER_SHARER_USER_ID;
 
 @RestController
 @RequestMapping(path = "/requests")

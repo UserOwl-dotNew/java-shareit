@@ -8,11 +8,8 @@ import ru.practicum.shareit.dto.answer.AnswerDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ru.practicum.shareit.constants.SqlConstants.DATA_PATTERN;
+import static ru.practicum.shareit.constants.Constants.DATA_PATTERN;
 
-/**
- * TODO Sprint add-item-requests.
- */
 @Data
 @AllArgsConstructor(staticName = "of")
 public class ItemRequestDtoWithAnswers {

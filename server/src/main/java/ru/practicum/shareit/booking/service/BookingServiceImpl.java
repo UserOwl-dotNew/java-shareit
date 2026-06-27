@@ -161,7 +161,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private boolean isOwner(Item item, Long userId) {
-//        userExist(userId);
         return item.getOwnerId().equals(userId);
     }
 

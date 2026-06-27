@@ -18,42 +18,32 @@
     <description>Common classes for ShareIt</description>
 
     <dependencies>
-        <!-- ===== LOMBOK ===== -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
 
-        <!-- ===== JAKARTA VALIDATION ===== -->
-        <!-- Дает @NotNull, @NotBlank, @Email, @Size и т.д. -->
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
 
-        <!-- ===== JACKSON ===== -->
-        <!-- Дает @JsonProperty, @JsonIgnore и т.д. -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
 
-        <!-- ===== JAKARTA PERSISTENCE (для @Enumerated) ===== -->
-        <!-- Если в DTO есть @Enumerated - нужна эта зависимость -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
 
-        <!-- ===== SPRING FRAMEWORK (для @ConfigurationProperties) ===== -->
-        <!-- Если используешь @ConfigurationProperties в DTO -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
 
-        <!-- ===== MAPSTRUCT ===== -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
@@ -64,7 +54,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- ===== ТЕСТЫ ===== -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

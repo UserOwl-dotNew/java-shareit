@@ -10,7 +10,7 @@ import ru.practicum.shareit.enums.booking.BookingStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ru.practicum.shareit.constants.SqlConstants.CURRENT_TIMESTAMP;
+import static ru.practicum.shareit.constants.Constants.CURRENT_TIMESTAMP;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {

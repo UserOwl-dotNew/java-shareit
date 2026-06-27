@@ -10,11 +10,8 @@ import ru.practicum.shareit.enums.booking.BookingStatus;
 
 import java.time.LocalDateTime;
 
-import static ru.practicum.shareit.constants.SqlConstants.DATA_PATTERN;
+import static ru.practicum.shareit.constants.Constants.DATA_PATTERN;
 
-/**
- * TODO Sprint add-bookings.
- */
 @Data
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)

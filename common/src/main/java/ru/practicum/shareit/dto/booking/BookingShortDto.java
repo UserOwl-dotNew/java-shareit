@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static ru.practicum.shareit.constants.SqlConstants.DATA_PATTERN;
+import static ru.practicum.shareit.constants.Constants.DATA_PATTERN;
 
 @Data
 @AllArgsConstructor
